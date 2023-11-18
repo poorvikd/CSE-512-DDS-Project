@@ -15,10 +15,6 @@ import random
 
 
 
-
-
-
-
 def create(db):
     print("Inserting data into Sensor, Sensor Data, and Device Control collections")
     sensor_type = random.choice(list(SENSOR.keys()))
