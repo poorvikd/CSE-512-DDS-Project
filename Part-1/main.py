@@ -47,10 +47,10 @@ def create_psql_tables(conn):
                 address VARCHAR(255),
                 total_floors INT,
                 construction_year INT,
-                building_type VARCHAR(100),
-                emergency_contact VARCHAR(255),
-                maintenance_contact VARCHAR(255),
-                energy_rating VARCHAR(50),
+                building_type VARCHAR(50),
+                emergency_contact VARCHAR(15),
+                maintenance_contact VARCHAR(15),
+                energy_rating VARCHAR(2),
                 building_status VARCHAR(50)
             );
         """)
@@ -93,8 +93,8 @@ def create_psql_tables(conn):
                 password_hash TEXT,
                 date_joined DATE,
                 last_login_date DATE,
-                phone_number VARCHAR(50),
-                emergency_contact VARCHAR(255),
+                phone_number VARCHAR(15),
+                emergency_contact VARCHAR(15),
                 access_level VARCHAR(50)
             );
         """)
@@ -211,7 +211,7 @@ def basic_data_retrival_psql(conn):
     """)
     print("Number of denied access logs: ",cur.fetchall()[0][0])
 
-    # Select access logs for a specific user in a specific room
+    # Select access logs for a specific room
     print("Access logs for room (id=5): ")
     cur.execute("""
         SELECT * FROM access_logs
@@ -286,8 +286,8 @@ if __name__ == "__main__":
 
     # Basic Data Retrieval Queries
 
-    # basic_data_retrival_psql(conn)
-    basic_data_retrival_mongo(db)
+    basic_data_retrival_psql(conn)
+    # basic_data_retrival_mongo(db)
     
 
 
