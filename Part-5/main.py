@@ -12,6 +12,7 @@
 from pymongo import MongoClient
 from faker import Faker
 import random
+from pprint import pprint
 
 
 
@@ -32,6 +33,8 @@ def create(db):
     }
     db['sensors'].insert_one(sensor_data)
 
+    pprint(sensor_data)
+
     sensor_data_data = {
         'data_id': 1001,
         'sensor_id': sensor_data['sensor_id'],
@@ -43,6 +46,8 @@ def create(db):
         'data_status': random.choice(['confirmed', 'unconfirmed'])
     }
     db['sensor_data'].insert_one(sensor_data_data)
+
+    pprint(sensor_data_data)
 
     device_type = random.choice(list(DEVICE_CONTROL.keys()))
     device_type_data = {
@@ -57,24 +62,27 @@ def create(db):
     }
     db['device_controls'].insert_one(device_type_data)
 
+    pprint(device_type_data)
+
     print("Data inserted successfully")
 
 def read(db):
     print("Reading data from Sensor, Sensor Data, and Device Control collections that were inserted")
     print("Sensor: ")
-    for i,data in enumerate(db['sensor_data'].find({'sensor_id': 1001,'room_id': 500})):
-        print(f"{i}. {data}")
+    for i,data in enumerate(db['sensors'].find({'sensor_id': 1001,'room_id': 500})):
+        pprint(data)
     print()
     print("Sensor Data: ")
     for i,data in enumerate(db['sensor_data'].find({'data_id':1001,'sensor_id': 1001})):
-        print(f"{i}. {data}")
+        pprint(data)
     print()
     print("Device Control: ")
     for i,data in enumerate(db['device_controls'].find({'device_id':101,'room_id': 500})):
-        print(f"{i}. {data}")
+        pprint(data)
 
 def update(db):
     print("Updating data in Sensor, Sensor Data, and Device Control collections that were inserted")
+    print("Updating sensor status to inactive, sensor data quality to bad, and device status to not functioning")
     db['sensors'].update_one({'sensor_id': 1001}, {'$set': {'sensor_status': 'inactive'}})
     db['sensor_data'].update_one({'data_id': 1001}, {'$set': {'data_quality': 'bad'}})
     db['device_controls'].update_one({'device_id': 101}, {'$set': {'device_status': 'not functioning'}})
@@ -86,6 +94,34 @@ def delete(db):
     db['sensor_data'].delete_one({'data_id':1001,'sensor_id': 1001})
     db['device_controls'].delete_one({'device_id':101,'room_id': 500})
     print("Data deleted successfully")
+
+
+def run_queries(db):
+    # Find all sensors with sensor type 'Temperature' and model 'T3000
+    print("All sensors with sensor type temperature and model T3000: ")
+    sensors = db['sensors']
+    for i,sensor in enumerate(sensors.find({'sensor_type': 'temperature', 'model': 'T3000'})):
+        print(f"{i}. {sensor}")
+
+    # Count all inactive sensors
+    print("Number of inactive sensors: ", sensors.count_documents({'sensor_status': 'inactive'}))
+
+    # Find Sensor Data with id = 158
+    print("Sensor Data with id = 158: ")
+    sensor_data = db['sensor_data']
+    for i,data in enumerate(sensor_data.find({'sensor_id': 158})):
+        print(f"{i}. {data}")
+    
+
+    # Count sensor data with poor quality
+    print("Number of sensor data with bad quality: ", sensor_data.count_documents({'data_quality': 'bad'}))
+
+
+    # Find all device controls with device type 'CCTV' and running the ZigBee communication protocol
+    print("All device controls with device type 'CCTV' and running the ZigBee communication protocol: ")
+    device_controls = db['device_controls']
+    for i,control in enumerate(device_controls.find({'device_type':'CCTV','control_protocol':'Zigbee'})):
+        print(f"{i}. {control}")
 
 
 
@@ -165,10 +201,13 @@ if __name__ == '__main__':
 
     # CRUD Operations
 
-    create(db)
-    read(db)
-    update(db)
-    read(db)
-    delete(db)
+    # create(db)
+    # read(db)
+    # update(db)
+    # read(db)
+    # delete(db)
+    # read(db)
     
+    run_queries(db)
+
     client.close()

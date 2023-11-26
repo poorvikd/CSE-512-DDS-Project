@@ -272,7 +272,7 @@ if __name__ == "__main__":
     db = client[DB_NAME]
 
     # Create collections
-    # create_mongo_collections(db)
+    create_mongo_collections(db)
 
 
     # Generate and Insert data
@@ -286,8 +286,8 @@ if __name__ == "__main__":
 
     # Basic Data Retrieval Queries
 
-    basic_data_retrival_psql(conn)
-    # basic_data_retrival_mongo(db)
+    # basic_data_retrival_psql(conn)
+    basic_data_retrival_mongo(db)
     
 
 
