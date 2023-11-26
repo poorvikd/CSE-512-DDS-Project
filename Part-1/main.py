@@ -21,14 +21,14 @@ def connect_psql_db(dbname="postgres"):
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)
 
+
 def create_psql_SB_db(conn):
     print("Creating Smart-Building database....")
     try:
-        cursor = conn.cursor()
-        cursor.execute("DROP DATABASE IF EXISTS " + DB_NAME)
-        cursor.execute("CREATE DATABASE " + DB_NAME)
-        cursor.close()
-        conn.close()
+        cur = conn.cursor()
+        cur.execute("DROP DATABASE IF EXISTS " + DB_NAME)
+        cur.execute("CREATE DATABASE " + DB_NAME)
+        cur.close()
         print("Created Database " + DB_NAME)
     
     except (Exception, psycopg2.Error) as error:
@@ -48,8 +48,8 @@ def create_psql_tables(conn):
                 total_floors INT,
                 construction_year INT,
                 building_type VARCHAR(50),
-                emergency_contact VARCHAR(15),
-                maintenance_contact VARCHAR(15),
+                emergency_contact VARCHAR(50),
+                maintenance_contact VARCHAR(50),
                 energy_rating VARCHAR(2),
                 building_status VARCHAR(50)
             );
@@ -93,8 +93,8 @@ def create_psql_tables(conn):
                 password_hash TEXT,
                 date_joined DATE,
                 last_login_date DATE,
-                phone_number VARCHAR(15),
-                emergency_contact VARCHAR(15),
+                phone_number VARCHAR(50),
+                emergency_contact VARCHAR(50),
                 access_level VARCHAR(50)
             );
         """)
@@ -254,16 +254,16 @@ def basic_data_retrival_mongo(db):
 
 if __name__ == "__main__":
     # Connect to PostgreSQL
-    # conn = connect_psql_db()
+    conn = connect_psql_db()
 
     # Create Smart-Building database
-    # create_psql_SB_db(conn)
+    create_psql_SB_db(conn)
 
     # Connect to Smart-Building database
     conn = connect_psql_db(DB_NAME)
 
     # Create tables
-    # create_psql_tables(conn)
+    create_psql_tables(conn)
 
     # Connect to MongoDB
     client = MongoClient('mongodb://127.0.0.1:27017/')
@@ -276,17 +276,17 @@ if __name__ == "__main__":
 
 
     # Generate and Insert data
-    # psql_generate(conn)
+    psql_generate(conn)
 
     # Compile ids
-    # building_ids, floor_ids, room_ids, user_ids = compile_ids(conn)
+    building_ids, floor_ids, room_ids, user_ids = compile_ids(conn)
 
     # Generate and Insert data
-    # mongo_data_generator(db, room_ids)
+    mongo_data_generator(db, room_ids)
 
     # Basic Data Retrieval Queries
 
-    # basic_data_retrival_psql(conn)
+    basic_data_retrival_psql(conn)
     basic_data_retrival_mongo(db)
     
 
