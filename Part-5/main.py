@@ -201,12 +201,12 @@ if __name__ == '__main__':
 
     # CRUD Operations
 
-    # create(db)
-    # read(db)
-    # update(db)
-    # read(db)
-    # delete(db)
-    # read(db)
+    create(db)
+    read(db)
+    update(db)
+    read(db)
+    delete(db)
+    read(db)
     
     run_queries(db)
 

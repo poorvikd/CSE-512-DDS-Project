@@ -355,13 +355,13 @@ def replication_interaction():
 if __name__ == '__main__':
     DB_NAME = 'smart_building'
     # Connect to PostgreSQL
-    # conn = connect_psql_db(DB_NAME)
+    conn = connect_psql_db(DB_NAME)
 
     # # Create Vertical Partitions
-    # create_vertical_partitions(conn)
+    create_vertical_partitions(conn)
 
     # # Create Horizontal Partitions
-    # create_horizontal_partitions(conn)
+    create_horizontal_partitions(conn)
 
     # Setup Replication
     replication_interaction()
