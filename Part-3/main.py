@@ -8,7 +8,7 @@ def connect_psql_db(dbname="postgres"):
     print(f"Connecting to {dbname}....")
     try:
         connection = psycopg2.connect(  user="postgres",
-                                        password="pratheek",
+                                        password="Password",
                                         host="127.0.0.1",
                                         port="5432",
                                         database=dbname)
